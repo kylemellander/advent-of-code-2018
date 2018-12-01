@@ -23,7 +23,7 @@ defmodule AdventOfCode2018 do
   """
 
   def read_file(n) do
-    case File.read "inputs/day#{n}.txt" do
+    case File.read("inputs/day#{n}.txt") do
       {:ok, result} -> result
       _ -> ""
     end
