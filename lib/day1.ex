@@ -31,10 +31,9 @@ defmodule Day1 do
   Starting with a frequency of zero, what is the resulting frequency after all
   of the changes in frequency have been applied?
   """
-  def star1 do
-    data()
-    |> Enum.reduce(0, &sum/2)
-  end
+  def star1, do: star1(data())
+  def star1(data) when is_list(data), do: Enum.reduce(data, 0, &sum/2)
+  def star1(data), do: data |> parse_data |> star1
 
   @doc """
   star2/0
@@ -70,16 +69,18 @@ defmodule Day1 do
 
   What is the first frequency your device reaches twice?
   """
-  def star2 do
-    {:not_ok, 0, [0]}
-    |> search_for_duplicate(data())
+  def star2, do: star2(data())
+  def star2(data) when is_list(data) do
+    search_for_duplicate({:not_ok, 0, [0]}, data)
   end
+  def star2(data), do: data |> parse_data |> star2
 
   defp sum(n, acc) do
     n + acc
   end
 
   defp search_for_duplicate({:ok, result, _}, _), do: result
+
   defp search_for_duplicate(state, data) do
     data
     |> Enum.reduce(state, &first_duplicate_sum_finder/2)
@@ -87,8 +88,10 @@ defmodule Day1 do
   end
 
   defp first_duplicate_sum_finder(_, {:ok, a, b}), do: {:ok, a, b}
+
   defp first_duplicate_sum_finder(n, {:not_ok, sum, previous_sums}) do
     new_sum = n + sum
+
     case previous_sums |> Enum.any?(fn x -> x == new_sum end) do
       true -> {:ok, new_sum, nil}
       false -> {:not_ok, new_sum, [new_sum | previous_sums]}
@@ -97,7 +100,7 @@ defmodule Day1 do
 
   defp data do
     1
-    |> AdventOfCode2018.read_file
+    |> AdventOfCode2018.read_file()
     |> parse_data
   end
 
