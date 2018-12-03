@@ -1,5 +1,5 @@
 defmodule Day201525 do
-  def start_number, do: 20151125
+  def start_number, do: 20_151_125
 
   @moduledoc """
   ## Examples
@@ -8,6 +8,7 @@ defmodule Day201525 do
       2650453
   """
   def star1, do: data() |> star1
+
   @doc ~S"""
   ## Example
 
@@ -16,10 +17,11 @@ defmodule Day201525 do
   """
   def star1(data) do
     position = data |> position()
+
     2..position
-    |> Enum.reduce(start_number(), fn(_, current_number) ->
-      current_number * 252533
-      |> Integer.mod(33554393)
+    |> Enum.reduce(start_number(), fn _, current_number ->
+      (current_number * 252_533)
+      |> Integer.mod(33_554_393)
     end)
   end
 

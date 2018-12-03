@@ -74,16 +74,18 @@ defmodule Day3 do
       111485
   """
   def star1, do: data() |> star1
+
   def star1(data) when is_list(data) do
     data
     |> calculate_point_counts()
-    |> Enum.reduce(0, fn({_, value}, acc) ->
-      case value > 1 do  
+    |> Enum.reduce(0, fn {_, value}, acc ->
+      case value > 1 do
         true -> acc + 1
         false -> acc
       end
     end)
   end
+
   @doc ~S"""
   ## Example
 
@@ -94,10 +96,10 @@ defmodule Day3 do
 
   defp calculate_point_counts(data) do
     data
-    |> Enum.reduce(%{}, fn(line, acc) ->
+    |> Enum.reduce(%{}, fn line, acc ->
       line
       |> generate_rect_coordinates()
-      |> Enum.reduce(acc, fn({key, value}, inner_acc) ->
+      |> Enum.reduce(acc, fn {key, value}, inner_acc ->
         Map.merge(inner_acc, %{key => (Map.get(inner_acc, key) || 0) + value})
       end)
     end)
@@ -105,9 +107,9 @@ defmodule Day3 do
 
   defp generate_rect_coordinates(%{x: x, y: y, height: height, width: width}) do
     x..(x + width - 1)
-    |> Enum.reduce(%{}, fn(x, acc) ->
+    |> Enum.reduce(%{}, fn x, acc ->
       y..(y + height - 1)
-      |> Enum.reduce(acc, fn(y, inner_acc) ->
+      |> Enum.reduce(acc, fn y, inner_acc ->
         Map.merge(inner_acc, %{"#{x},#{y}": 1})
       end)
     end)
@@ -130,6 +132,7 @@ defmodule Day3 do
       113
   """
   def star2, do: data() |> star2()
+
   @doc ~S"""
   ## Examples
 
@@ -142,15 +145,16 @@ defmodule Day3 do
     |> find_non_intersecting_rect(data)
     |> Map.get(:id)
   end
+
   def star2(data), do: data |> parse_data |> star2
 
   defp find_non_intersecting_rect(counts, data) do
     data
-    |> Enum.find(fn(%{x: x, y: y, height: height, width: width}) ->
+    |> Enum.find(fn %{x: x, y: y, height: height, width: width} ->
       x..(x + width - 1)
-      |> Enum.reduce(true, fn(x, acc) ->
+      |> Enum.reduce(true, fn x, acc ->
         y..(y + height - 1)
-        |> Enum.reduce(acc, fn(y, inner_acc) ->
+        |> Enum.reduce(acc, fn y, inner_acc ->
           inner_acc && Map.get(counts, String.to_atom("#{x},#{y}")) == 1
         end)
       end)
@@ -172,8 +176,9 @@ defmodule Day3 do
     )
     |> String.split("\n")
     |> Enum.with_index()
-    |> Enum.map(fn({line, i}) ->
+    |> Enum.map(fn {line, i} ->
       elements = String.split(line, ",")
+
       %{
         x: Enum.at(elements, 0) |> String.to_integer() |> Kernel.+(1),
         y: Enum.at(elements, 1) |> String.to_integer() |> Kernel.+(1),

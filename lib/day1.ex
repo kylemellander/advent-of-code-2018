@@ -97,9 +97,11 @@ defmodule Day1 do
       452
   """
   def star2, do: star2(data())
+
   def star2(data) when is_list(data) do
     search_for_duplicate({:not_ok, 0, %{0 => 1}}, data)
   end
+
   def star2(data), do: data |> parse_data |> star2
 
   defp sum(n, acc) do
@@ -107,6 +109,7 @@ defmodule Day1 do
   end
 
   defp search_for_duplicate({:ok, result, _}, _), do: result
+
   defp search_for_duplicate(state, data) do
     data
     |> Enum.reduce(state, &first_duplicate_sum_finder/2)
@@ -114,6 +117,7 @@ defmodule Day1 do
   end
 
   defp first_duplicate_sum_finder(_, {:ok, a, b}), do: {:ok, a, b}
+
   defp first_duplicate_sum_finder(n, {:not_ok, sum, previous_sums}) do
     new_sum = n + sum
 

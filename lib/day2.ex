@@ -56,6 +56,7 @@ defmodule Day2 do
       7192
   """
   def star1, do: data() |> star1
+
   @doc ~S"""
   ## Example
 
@@ -73,17 +74,17 @@ defmodule Day2 do
   end
 
   defp find_counts(line, %{"2": twos, "3": threes}) do
-    new_twos = if (repeats?(line, 2)), do: [line | twos], else: twos
-    new_threes = if (repeats?(line, 3)), do: [line | threes], else: threes
-    %{"2": new_twos, "3": new_threes }
+    new_twos = if repeats?(line, 2), do: [line | twos], else: twos
+    new_threes = if repeats?(line, 3), do: [line | threes], else: threes
+    %{"2": new_twos, "3": new_threes}
   end
 
   defp repeats?(line, count) do
     line
-    |> String.graphemes
-    |> Enum.any?(fn(char) ->
+    |> String.graphemes()
+    |> Enum.any?(fn char ->
       Regex.scan(~r/#{char}/, line)
-      |> Enum.count
+      |> Enum.count()
       |> Kernel.==(count)
     end)
   end
@@ -120,6 +121,7 @@ defmodule Day2 do
       "mbruvapghxlzycbhmfqjonsie"
   """
   def star2, do: data() |> star2()
+
   @doc """
   ## Examples
 
@@ -137,17 +139,17 @@ defmodule Day2 do
 
   defp line_has_similar(line, list) do
     list
-    |> Enum.find(fn(list_line) ->
+    |> Enum.find(fn list_line ->
       0..(String.length(list_line) - 1)
-      |> Enum.count(fn(i) -> !compare_strings_at?(line, list_line, i) end)
+      |> Enum.count(fn i -> !compare_strings_at?(line, list_line, i) end)
       |> Kernel.==(1)
     end)
   end
 
   defp remove_diff(a, b) do
     0..(String.length(a) - 1)
-    |> Enum.reduce("", fn(i, result) ->
-      if (compare_strings_at?(a, b, i)) do
+    |> Enum.reduce("", fn i, result ->
+      if compare_strings_at?(a, b, i) do
         "#{result}#{String.at(a, i)}"
       else
         result
